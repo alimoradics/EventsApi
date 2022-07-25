@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  eventsapi:
+    image: ${DOCKER_REGISTRY-}eventsapi
+    build:
+      context: .
+      dockerfile: EventsApi/Dockerfile
+
+  eventsapitests:
+    image: ${DOCKER_REGISTRY-}eventsapitests
+    build:
+      context: .
+      dockerfile: EventsApiTests/Dockerfile
+
