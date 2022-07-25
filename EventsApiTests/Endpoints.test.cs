@@ -1,21 +1,16 @@
 ﻿namespace EventsApiTests;
 
-using WebApi.Controllers;
-using WebApi.Services;
 using WebApi.Entities;
 using WebApi.Models;
 using WebApi.Models.Events;
 using Moq;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using System.Net;
 using System.Text.Json;
 using System.Text;
 using FluentAssertions;
-using FluentAssertions.Extensions;
 using FluentAssertions.Json;
-using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 
 public class EndpointsTest : IClassFixture<WebApplicationFactory<Program>>
@@ -116,31 +111,6 @@ public class EndpointsTest : IClassFixture<WebApplicationFactory<Program>>
         // Assert
         Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         
-    }
-
-    [Fact]
-    public async void PUT_Event_By_Id()
-    {
-        // Arrange
-        var request = CreateUpdateEventRequest();
-        var requestJson = JsonSerializer.Serialize(request);
-        var expected = _mapper.Map<Event>(request);
-
-        var requestMessage = GetAuthenticatedRequestMessage(HttpMethod.Put, "/events/1");
-        requestMessage.Content = new StringContent(requestJson, Encoding.UTF8, "application/json");
-
-        // Act
-        var response = await _client.SendAsync(requestMessage);
-        var responseContent = JsonSerializer.Deserialize<Event>(await response.Content.ReadAsStringAsync());
-
-        var getResponse = await _client.SendAsync(GetAuthenticatedRequestMessage(HttpMethod.Get, "/events/1"));
-        var getResponseContent = JsonSerializer.Deserialize<Event>(await getResponse.Content.ReadAsStringAsync());
-
-        // Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        expected.Should().BeEquivalentTo(getResponseContent, options =>
-            options.Excluding(o => o.Id));
-        Assert.Equal(1, getResponseContent.Id);
     }
 
     [Fact]

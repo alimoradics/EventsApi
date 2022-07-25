@@ -15,15 +15,12 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddCors();
     services.AddControllers().AddJsonOptions(x =>
     {
-        // serialize enums as strings in api responses (e.g. Role)
         x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 
-        // ignore omitted parameters on models to enable optional params (e.g. User update)
         x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     });
     services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-    // configure DI for application services
     services.AddScoped<IEventService, EventService>();
     services.AddScoped<IDatabaseSeeder, SeederService>();
 
@@ -59,13 +56,13 @@ var builder = WebApplication.CreateBuilder(args);
 }
 
 var app = builder.Build();
+
 using (var scope = app.Services.CreateScope())
 {
     var seeder = scope.ServiceProvider.GetRequiredService<IDatabaseSeeder>();
     seeder.Seed();
-    // use context
 }
-// configure HTTP request pipeline
+
 {
     // global cors policy
     app.UseCors(x => x

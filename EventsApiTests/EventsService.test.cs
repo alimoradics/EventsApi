@@ -1,13 +1,11 @@
 ﻿namespace EventsApiTests;
 
-using WebApi.Controllers;
 using WebApi.Services;
 using WebApi.Entities;
 using WebApi.Models;
 using WebApi.Models.Events;
 using Moq;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 

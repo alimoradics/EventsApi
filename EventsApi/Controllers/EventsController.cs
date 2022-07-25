@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Models.Events;
 using WebApi.Services;
+
 [ApiController]
 [Route("[controller]")]
 [Produces("application/json")]
